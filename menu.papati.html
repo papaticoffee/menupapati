@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="منيو PAPATI — قهوة ومشروبات معمولة بحب.">
+  <link rel="icon" href="assets/papati-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/papati-favicon.svg">
+  <title>PAPATI | قهوتك على مزاجك</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <section class="welcome-screen" id="welcome-screen" aria-labelledby="welcome-title">
+    <div class="welcome-top">
+      <a class="brand welcome-brand" href="#" aria-label="PAPATI - الصفحة الرئيسية" data-i18n-aria="brandAria">
+        <span class="brand-mark" aria-hidden="true"><img src="assets/papati-mascot.png" alt=""></span>
+        <span class="brand-name">PAPATI<span data-i18n="tagline">قهوة على مزاجك</span></span>
+      </a>
+      <div class="welcome-actions">
+        <a class="location-mark" href="https://maps.app.goo.gl/vZLG5aD9ffbA7RGG6" target="_blank" rel="noopener noreferrer" aria-label="موقع PAPATI" data-i18n-aria="locationAria">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+        </a>
+        <button class="language-toggle" id="welcome-language-toggle" type="button" lang="en" aria-label="Switch language to English">EN</button>
+      </div>
+    </div>
+    <div class="welcome-content">
+      <span class="welcome-kicker"><span class="eyebrow-dot"></span><span data-i18n="welcomeKicker">أهلاً بيك في PAPATI</span></span>
+      <h1 id="welcome-title" data-i18n="welcomeTitle">قهوتك الحلوة<br>مستنياك.</h1>
+      <p data-i18n="welcomeDescription">اختار مشروبك المفضل، وخلي يومك أحلى مع PAPATI.</p>
+      <button class="welcome-button" id="enter-menu" type="button"><span data-i18n="welcomeButton">دخول للمنيو</span><span class="welcome-button-arrow" aria-hidden="true">←</span></button>
+      <span class="welcome-caption" data-i18n="welcomeCaption">قهوة معمولة بحب، على مزاجك</span>
+      <div class="opening-hours">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <span><strong data-i18n="openingHoursLabel">ساعات العمل</strong><span data-i18n="openingHours">يوميًا · ٨ صباحًا – ١٢ منتصف الليل</span></span>
+      </div>
+      <section class="payment-methods" aria-labelledby="payment-title">
+        <h2 id="payment-title" data-i18n="paymentTitle">طرق الدفع</h2>
+        <ul>
+          <li><img src="assets/payment-instapay.svg" alt=""><span>InstaPay</span></li>
+          <li><img src="assets/payment-wallet.svg" alt=""><span data-i18n="paymentWallet">محفظة إلكترونية</span></li>
+          <li><img src="assets/payment-cash.svg" alt=""><span data-i18n="paymentCash">كاش</span></li>
+        </ul>
+      </section>
+    </div>
+    <span class="welcome-decoration decoration-top" aria-hidden="true">✳</span>
+    <span class="welcome-decoration decoration-bottom" aria-hidden="true"><img src="assets/papati-favicon.svg" alt=""></span>
+  </section>
+  <div class="site-content" id="site-content" hidden>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="PAPATI - الصفحة الرئيسية" data-i18n-aria="brandAria">
+        <span class="brand-mark" aria-hidden="true"><img src="assets/papati-mascot.png" alt=""></span>
+        <span class="brand-name">PAPATI<span data-i18n="tagline">قهوة على مزاجك</span></span>
+      </a>
+      <div class="header-controls">
+        <a class="location-mark" href="https://maps.app.goo.gl/vZLG5aD9ffbA7RGG6" target="_blank" rel="noopener noreferrer" aria-label="موقع PAPATI" data-i18n-aria="locationAria">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+        </a>
+        <button class="language-toggle" id="menu-language-toggle" type="button" lang="en" aria-label="Switch language to English">EN</button>
+      </div>
+    </header>
+    <main>
+      <section class="menu-section" id="menu" aria-labelledby="menu-title">
+        <div class="section-heading">
+          <div class="heading-copy">
+            <span class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="menuEyebrow">اختار اللي على مزاجك</span></span>
+            <h2 id="menu-title"><span data-i18n="menuTitle">منيو <span>PAPATI</span></span></h2>
+            <p data-i18n="menuDescription">حاجات حلوة تتعمل مخصوص عشانك.</p>
+          </div>
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+            <input id="menu-search" type="search" placeholder="بتدور على إيه؟" autocomplete="off" aria-label="ابحث في المنيو" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria">
+          </label>
+        </div>
+        <nav class="category-list" aria-label="أقسام المنيو" id="category-list" data-i18n-aria="categoriesAria">
+          <button class="category-button is-active" type="button" data-category="all" aria-pressed="true">كل الحاجات</button>
+          <button class="category-button" type="button" data-category="hot" aria-pressed="false">☕ سخن</button>
+          <button class="category-button" type="button" data-category="cold" aria-pressed="false">🧊 ساقع</button>
+        </nav>
+        <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+        <p class="empty-state" id="empty-state" hidden data-i18n="emptyState">ملقيناش حاجة بالاسم ده… جرّب تدور على حاجة تانية.</p>
+        <p class="menu-footnote" data-i18n="menuFootnote">الأسعار المعروضة بالجنيه المصري.</p>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#" aria-label="PAPATI - الصفحة الرئيسية" data-i18n-aria="brandAria">
+        <span class="brand-mark" aria-hidden="true"><img src="assets/papati-mascot.png" alt=""></span>
+        <span class="brand-name">PAPATI<span data-i18n="tagline">قهوة على مزاجك</span></span>
+      </a>
+      <p><span data-i18n="footerMessage">نورتنا، مستنيين زيارتك الجاية</span> <span aria-hidden="true">♡</span></p>
+      <div class="opening-hours footer-hours">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <span><strong data-i18n="openingHoursLabel">ساعات العمل</strong><span data-i18n="openingHours">يوميًا · ٨ صباحًا – ١٢ منتصف الليل</span></span>
+      </div>
+      <span class="footer-copy" data-i18n="copyright">© 2026 PAPATI كافيه</span>
+    </footer>
+  </div>
+</body>
+</html>
