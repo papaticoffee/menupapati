@@ -31,8 +31,8 @@ const menuItems = [
   { name: "كورتادو دبل", nameEn: "Double Cortado", category: "hot", price: 60, icon: "☕" },
   { name: "فلات وايت دابل", nameEn: "Double Flat White", category: "hot", price: 60, icon: "☕" },
   { name: "امريكانو", nameEn: "Americano", category: "hot", price: 60, icon: "☕" },
-  { name: "آيس لاتيه", nameEn: "Iced Latte", category: "cold", description: "إسبريسو مع حليب بارد وثلج", descriptionEn: "Espresso with cold milk and ice", price: 80, icon: "🧋", badge: "اختيارنا", badgeEn: "Our pick" },
-  { name: "آيس سبانيش لاتيه", nameEn: "Iced Spanish Latte", category: "cold", description: "حلاوة الحليب المكثف مع قهوة باردة", descriptionEn: "Sweet condensed milk blended with chilled coffee", price: 110, icon: "🧊" },
+  { name: "آيس لاتيه", nameEn: "Iced Latte", category: "cold", description: "إسبريسو مع حليب بارد وثلج", descriptionEn: "Espresso with cold milk and ice", price: 80, icon: "🧋", badge: "اختيارنا", badgeEn: "Our pick", image: "assets/iced-latte.jpg" },
+  { name: "آيس سبانيش لاتيه", nameEn: "Iced Spanish Latte", category: "cold", description: "حلاوة الحليب المكثف مع قهوة باردة", descriptionEn: "Sweet condensed milk blended with chilled coffee", price: 110, icon: "🧊", image: "assets/iced-spanish-latte.jpg" },
   { name: "عصير ليمون", nameEn: "Fresh Lemon Juice", category: "cold", price: 50, icon: "🍋" },
   { name: "ايس موكا", nameEn: "Iced Mocha", category: "cold", price: 90, icon: "☕" },
   { name: "ايس امريكانو", nameEn: "Iced Americano", category: "cold", price: 70, icon: "☕" },
@@ -173,13 +173,30 @@ function renderMenu() {
     card.className = "menu-card";
     if (animateMenuTransition) {
       card.classList.add("is-entering");
-      card.style.setProperty("--item-index", Math.min(index, 8));
+      card.classList.add(`is-entering-${Math.min(index, 8)}`);
     }
 
     const artwork = document.createElement("span");
     artwork.className = `item-art ${item.category}`;
     artwork.setAttribute("aria-hidden", "true");
-    artwork.append(getFallback(item));
+    const fallback = getFallback(item);
+    artwork.append(fallback);
+    if (item.image) {
+      artwork.classList.add("has-photo");
+      fallback.hidden = true;
+
+      const photo = document.createElement("img");
+      photo.className = "product-photo";
+      photo.src = item.image;
+      photo.alt = "";
+      photo.loading = "lazy";
+      photo.decoding = "async";
+      photo.addEventListener("error", () => {
+        photo.hidden = true;
+        fallback.hidden = false;
+      }, { once: true });
+      artwork.append(photo);
+    }
     card.append(artwork);
 
     const details = document.createElement("div");

@@ -168,13 +168,23 @@ html[dir="ltr"] .welcome-button-arrow { transform: rotate(180deg); }
 .category-button.is-active { border-color: var(--green); color: white; background: var(--green); }
 .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); justify-items: center; gap: 20px; }
 .menu-card { position: relative; display: flex; width: min(100%, 250px); aspect-ratio: 1; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; background: var(--paper); text-align: center; transition: transform .28s cubic-bezier(.2,.75,.25,1), box-shadow .28s ease, border-color .28s ease; }
-.menu-card.is-entering { animation: menu-card-enter .38s cubic-bezier(.2,.75,.25,1) both; animation-delay: calc(var(--item-index, 0) * 35ms); }
+.menu-card.is-entering { animation: menu-card-enter .38s cubic-bezier(.2,.75,.25,1) both; }
+.menu-card.is-entering-1 { animation-delay: 35ms; }
+.menu-card.is-entering-2 { animation-delay: 70ms; }
+.menu-card.is-entering-3 { animation-delay: 105ms; }
+.menu-card.is-entering-4 { animation-delay: 140ms; }
+.menu-card.is-entering-5 { animation-delay: 175ms; }
+.menu-card.is-entering-6 { animation-delay: 210ms; }
+.menu-card.is-entering-7 { animation-delay: 245ms; }
+.menu-card.is-entering-8 { animation-delay: 280ms; }
 @keyframes menu-card-enter { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .menu-card:hover, .menu-card:focus-within { transform: translateY(-5px) scale(1.025); border-color: rgba(255,255,255,.35); box-shadow: 0 18px 36px rgba(0,0,0,.45); }
 .item-art { display: grid; flex: 0 0 100px; width: 100px; height: 112px; place-items: center; overflow: hidden; border-radius: 12px; background: linear-gradient(145deg,#30302d,#242424); }
 .item-art.portrait-photo { flex-basis: auto; height: auto; aspect-ratio: 3 / 4; }
 .item-art.hot { background: #30271f; }
 .item-art.cold { background: #1e2d2d; }
+.item-art.has-photo { flex-basis: 104px; width: 80px; height: 104px; }
+.product-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
 .image-fallback { display: grid; width: 100%; height: 100%; place-items: center; font-size: 42px; }
 .item-details { min-width: 0; max-width: 100%; }
 .item-details h3 { margin: 0; font-size: 15px; font-weight: 700; }
