@@ -274,6 +274,14 @@ function renderCart() {
   cartOpenButton.hidden = itemCount === 0;
   cartCount.textContent = itemCount.toLocaleString(currentLanguage === "ar" ? "ar-EG" : "en");
   cartTotal.textContent = formatPrice(total);
+  menuGrid.querySelectorAll(".add-to-cart").forEach((button) => {
+    const item = menuItems.find((menuItem) => menuItem.nameEn === button.dataset.itemName);
+    const quantity = item ? cart.get(item) || 0 : 0;
+    button.textContent = quantity
+      ? `${translations[currentLanguage].addToCart} · ${quantity}`
+      : translations[currentLanguage].addToCart;
+    button.disabled = quantity >= 20;
+  });
   if (orderDialog.open) {
     renderOrder();
   }
@@ -341,13 +349,13 @@ function renderMenu() {
     const addButton = document.createElement("button");
     addButton.className = "add-to-cart";
     addButton.type = "button";
+    addButton.dataset.itemName = item.nameEn;
     addButton.textContent = translations[currentLanguage].addToCart;
     addButton.addEventListener("click", () => {
       const quantity = cart.get(item) || 0;
       if (quantity < 20) {
         cart.set(item, quantity + 1);
         renderCart();
-        addButton.textContent = `${translations[currentLanguage].addToCart} · ${quantity + 1}`;
       }
     });
     card.append(addButton);
@@ -365,6 +373,7 @@ function renderMenu() {
   menuGrid.replaceChildren(...cards);
   animateMenuTransition = false;
   emptyState.hidden = visibleItems.length > 0;
+  renderCart();
 }
 
 function setLanguage(language) {
@@ -452,7 +461,6 @@ orderForm.addEventListener("submit", async (event) => {
     website: formData.get("website"),
     items: [...cart.entries()].map(([item, quantity]) => ({
       name: currentLanguage === "ar" ? item.name : item.nameEn,
-      price: item.price,
       quantity,
     })),
   };
@@ -468,9 +476,13 @@ orderForm.addEventListener("submit", async (event) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const result = await response.json();
+    try {
+      await response.json();
+    } catch {
+      throw new Error(copy.orderError);
+    }
     if (!response.ok) {
-      throw new Error(result.error || copy.orderError);
+      throw new Error(copy.orderError);
     }
 
     cart.clear();
