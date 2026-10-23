@@ -93,6 +93,21 @@ const translations = {
     categoryCold: "🧊 ساقع",
     emptyState: "ملقيناش حاجة بالاسم ده… جرّب تدور على حاجة تانية.",
     menuFootnote: "الأسعار المعروضة بالجنيه المصري.",
+    addToCart: "أضف للسلة",
+    cartOpen: "راجع الطلب",
+    orderTitle: "تأكيد الطلب",
+    closeOrder: "إغلاق نافذة الطلب",
+    orderTotal: "الإجمالي التقريبي",
+    customerName: "اسمك",
+    customerPhone: "رقم الهاتف",
+    orderNotes: "ملاحظات (اختياري)",
+    sendOrder: "أرسل الطلب",
+    orderSending: "جارٍ إرسال الطلب…",
+    orderSuccess: "وصل طلبك للكافيه! هنتواصل معاك لتأكيده.",
+    orderError: "ماقدرناش نرسل الطلب دلوقتي. حاول تاني بعد شوية.",
+    cartEmpty: "السلة فاضية.",
+    increaseQuantity: "زيادة كمية",
+    decreaseQuantity: "تقليل كمية",
     footerMessage: "نورتنا، مستنيين زيارتك الجاية",
     copyright: "© 2026 PAPATI كافيه",
     switchLanguage: "Switch language to English",
@@ -125,6 +140,21 @@ const translations = {
     categoryCold: "🧊 Cold",
     emptyState: "Nothing found. Try searching for something else.",
     menuFootnote: "All displayed prices are in EGP.",
+    addToCart: "Add to order",
+    cartOpen: "Review order",
+    orderTitle: "Confirm your order",
+    closeOrder: "Close order dialog",
+    orderTotal: "Estimated total",
+    customerName: "Your name",
+    customerPhone: "Phone number",
+    orderNotes: "Notes (optional)",
+    sendOrder: "Send order",
+    orderSending: "Sending your order…",
+    orderSuccess: "Your order reached the café. We’ll contact you to confirm it.",
+    orderError: "We couldn’t send your order right now. Please try again shortly.",
+    cartEmpty: "Your order is empty.",
+    increaseQuantity: "Increase quantity",
+    decreaseQuantity: "Decrease quantity",
     footerMessage: "Thanks for stopping by. See you again soon",
     copyright: "© 2026 PAPATI Café",
     switchLanguage: "تغيير اللغة إلى العربية",
@@ -140,6 +170,16 @@ const languageToggles = [...document.querySelectorAll(".language-toggle")];
 const welcomeScreen = document.querySelector("#welcome-screen");
 const siteContent = document.querySelector("#site-content");
 const enterMenuButton = document.querySelector("#enter-menu");
+const cartOpenButton = document.querySelector("#cart-open");
+const cartCount = document.querySelector("#cart-count");
+const cartTotal = document.querySelector("#cart-total");
+const orderDialog = document.querySelector("#order-dialog");
+const orderForm = document.querySelector("#order-form");
+const orderItems = document.querySelector("#order-items");
+const orderTotal = document.querySelector("#order-total");
+const orderStatus = document.querySelector("#order-status");
+const submitOrderButton = document.querySelector("#submit-order");
+const cart = new Map();
 let selectedCategory = "all";
 let currentLanguage = "ar";
 let animateMenuTransition = false;
@@ -158,6 +198,85 @@ function getFallback(item) {
   fallback.setAttribute("aria-hidden", "true");
   fallback.textContent = item.icon;
   return fallback;
+}
+
+function formatPrice(amount) {
+  const locale = currentLanguage === "ar" ? "ar-EG" : "en";
+  return `${amount.toLocaleString(locale)} ${translations[currentLanguage].currency}`;
+}
+
+function renderOrder() {
+  const copy = translations[currentLanguage];
+  const entries = [...cart.entries()];
+  orderItems.replaceChildren();
+
+  if (!entries.length) {
+    const emptyItem = document.createElement("li");
+    emptyItem.className = "order-item";
+    emptyItem.textContent = copy.cartEmpty;
+    orderItems.append(emptyItem);
+  }
+
+  entries.forEach(([item, quantity]) => {
+    const row = document.createElement("li");
+    row.className = "order-item";
+    const name = document.createElement("span");
+    name.className = "order-item-name";
+    name.textContent = currentLanguage === "ar" ? item.name : item.nameEn;
+    const controls = document.createElement("span");
+    controls.className = "order-item-controls";
+
+    const decreaseButton = document.createElement("button");
+    decreaseButton.className = "quantity-button";
+    decreaseButton.type = "button";
+    decreaseButton.textContent = "−";
+    decreaseButton.setAttribute("aria-label", `${copy.decreaseQuantity}: ${name.textContent}`);
+    decreaseButton.addEventListener("click", () => {
+      if (quantity <= 1) {
+        cart.delete(item);
+      } else {
+        cart.set(item, quantity - 1);
+      }
+      renderCart();
+    });
+
+    const quantityLabel = document.createElement("span");
+    quantityLabel.textContent = String(quantity);
+
+    const increaseButton = document.createElement("button");
+    increaseButton.className = "quantity-button";
+    increaseButton.type = "button";
+    increaseButton.textContent = "+";
+    increaseButton.setAttribute("aria-label", `${copy.increaseQuantity}: ${name.textContent}`);
+    increaseButton.disabled = quantity >= 20;
+    increaseButton.addEventListener("click", () => {
+      if (quantity < 20) {
+        cart.set(item, quantity + 1);
+        renderCart();
+      }
+    });
+
+    const lineTotal = document.createElement("span");
+    lineTotal.textContent = formatPrice(item.price * quantity);
+    controls.append(decreaseButton, quantityLabel, increaseButton, lineTotal);
+    row.append(name, controls);
+    orderItems.append(row);
+  });
+
+  const total = entries.reduce((sum, [item, quantity]) => sum + item.price * quantity, 0);
+  orderTotal.textContent = formatPrice(total);
+  submitOrderButton.disabled = entries.length === 0;
+}
+
+function renderCart() {
+  const itemCount = [...cart.values()].reduce((sum, quantity) => sum + quantity, 0);
+  const total = [...cart.entries()].reduce((sum, [item, quantity]) => sum + item.price * quantity, 0);
+  cartOpenButton.hidden = itemCount === 0;
+  cartCount.textContent = itemCount.toLocaleString(currentLanguage === "ar" ? "ar-EG" : "en");
+  cartTotal.textContent = formatPrice(total);
+  if (orderDialog.open) {
+    renderOrder();
+  }
 }
 
 function renderMenu() {
@@ -219,6 +338,20 @@ function renderMenu() {
     details.append(price);
     card.append(details);
 
+    const addButton = document.createElement("button");
+    addButton.className = "add-to-cart";
+    addButton.type = "button";
+    addButton.textContent = translations[currentLanguage].addToCart;
+    addButton.addEventListener("click", () => {
+      const quantity = cart.get(item) || 0;
+      if (quantity < 20) {
+        cart.set(item, quantity + 1);
+        renderCart();
+        addButton.textContent = `${translations[currentLanguage].addToCart} · ${quantity + 1}`;
+      }
+    });
+    card.append(addButton);
+
     const badge = currentLanguage === "ar" ? item.badge : item.badgeEn;
     if (badge) {
       const badgeElement = document.createElement("span");
@@ -275,6 +408,7 @@ function setLanguage(language) {
     toggle.setAttribute("aria-pressed", String(language === "en"));
   });
   renderMenu();
+  renderCart();
 }
 
 categoryButtons.forEach((button) => {
@@ -292,6 +426,68 @@ categoryButtons.forEach((button) => {
 
 languageToggles.forEach((toggle) => {
   toggle.addEventListener("click", () => setLanguage(currentLanguage === "ar" ? "en" : "ar"));
+});
+
+cartOpenButton.addEventListener("click", () => {
+  renderOrder();
+  orderStatus.hidden = true;
+  orderStatus.className = "order-status";
+  orderDialog.showModal();
+});
+
+document.querySelector("#close-order").addEventListener("click", () => orderDialog.close());
+
+orderForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (cart.size === 0 || submitOrderButton.disabled) {
+    return;
+  }
+
+  const copy = translations[currentLanguage];
+  const formData = new FormData(orderForm);
+  const payload = {
+    customerName: formData.get("customerName"),
+    customerPhone: formData.get("customerPhone"),
+    notes: formData.get("notes"),
+    website: formData.get("website"),
+    items: [...cart.entries()].map(([item, quantity]) => ({
+      name: currentLanguage === "ar" ? item.name : item.nameEn,
+      price: item.price,
+      quantity,
+    })),
+  };
+
+  submitOrderButton.disabled = true;
+  submitOrderButton.textContent = copy.orderSending;
+  orderStatus.hidden = true;
+  orderStatus.className = "order-status";
+
+  try {
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.error || copy.orderError);
+    }
+
+    cart.clear();
+    orderForm.reset();
+    renderCart();
+    renderMenu();
+    orderStatus.textContent = copy.orderSuccess;
+    orderStatus.className = "order-status is-success";
+    orderStatus.hidden = false;
+  } catch (error) {
+    orderStatus.textContent = error instanceof Error ? error.message : copy.orderError;
+    orderStatus.className = "order-status is-error";
+    orderStatus.hidden = false;
+  } finally {
+    submitOrderButton.disabled = cart.size === 0;
+    submitOrderButton.textContent = copy.sendOrder;
+  }
 });
 
 enterMenuButton.addEventListener("click", () => {

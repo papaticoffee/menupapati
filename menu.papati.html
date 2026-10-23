@@ -83,6 +83,27 @@
         <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
         <p class="empty-state" id="empty-state" hidden data-i18n="emptyState">ملقيناش حاجة بالاسم ده… جرّب تدور على حاجة تانية.</p>
         <p class="menu-footnote" data-i18n="menuFootnote">الأسعار المعروضة بالجنيه المصري.</p>
+        <button class="cart-open" id="cart-open" type="button" hidden>
+          <span class="cart-count" id="cart-count">0</span>
+          <span data-i18n="cartOpen">راجع الطلب</span>
+          <span class="cart-total" id="cart-total"></span>
+        </button>
+        <dialog class="order-dialog" id="order-dialog" aria-labelledby="order-title">
+          <form id="order-form">
+            <div class="order-heading">
+              <h2 id="order-title" data-i18n="orderTitle">تأكيد الطلب</h2>
+              <button class="dialog-close" id="close-order" type="button" aria-label="إغلاق" data-i18n-aria="closeOrder">×</button>
+            </div>
+            <ul class="order-items" id="order-items"></ul>
+            <p class="order-total"><span data-i18n="orderTotal">الإجمالي التقريبي</span><strong id="order-total"></strong></p>
+            <label class="order-field"><span data-i18n="customerName">الاسم</span><input name="customerName" required maxlength="80" autocomplete="name"></label>
+            <label class="order-field"><span data-i18n="customerPhone">رقم الهاتف</span><input name="customerPhone" type="tel" required maxlength="24" autocomplete="tel" inputmode="tel"></label>
+            <label class="order-field"><span data-i18n="orderNotes">ملاحظات (اختياري)</span><textarea name="notes" maxlength="500" rows="3"></textarea></label>
+            <div class="order-honeypot" aria-hidden="true"><label for="order-website">Website</label><input id="order-website" name="website" tabindex="-1" autocomplete="off"></div>
+            <p class="order-status" id="order-status" role="status" aria-live="polite" hidden></p>
+            <button class="order-submit" id="submit-order" type="submit" data-i18n="sendOrder">أرسل الطلب</button>
+          </form>
+        </dialog>
       </section>
     </main>
     <footer class="site-footer">
