@@ -1,5 +1,5 @@
 const menuItems = [
-  { name: "كراميل ميكاتو", nameEn: "Caramel Macchiato", category: "hot", price: 70, icon: "☕" },
+  { name: "كراميل ميكاتو", nameEn: "Caramel Macchiato", category: "hot", price: 70, icon: "☕", image: "assets/caramel-macchiato.jpg" },
   { name: "سبانيش لاتيه", nameEn: "Spanish Latte", category: "hot", price: 80, icon: "☕" },
   { name: "كراميل لاتيه", nameEn: "Caramel Latte", category: "hot", price: 70, icon: "☕" },
   { name: "موكا لاتيه", nameEn: "Mocha Latte", category: "hot", price: 70, icon: "☕" },
